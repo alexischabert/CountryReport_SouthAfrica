@@ -1,0 +1,201 @@
+---
+title: "CountryReport_SouthAfrica_AlexisChabert"
+author: "AlexisChabert"
+date: "21/03/2020"
+output:
+  html_document: 
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+___
+
+
+```{r, include=FALSE}
+library(spiR)
+library(tidyr)
+library(dplyr)
+NBM_5 <- sqs_spi_data(country = c("AGO", "ZAF", "IND", "CHN", "LSO", "CAF", "MOZ", "GAB"),
+                       indicators = "NBM_5")
+
+NBM_5$value <- as.numeric(NBM_5$value)
+NBM_5 %>% arrange(value)
+
+```
+
+```{r, include=FALSE}
+library(ggplot2)
+library(plotly)
+
+infectiousdeseases <- ggplot(NBM_5) +
+ aes(x = var_year, y = value, colour = countryName) +
+ geom_line(size = 1.2) +
+ scale_color_hue() +
+ labs(x = "Year", y = "Deaths from infectious diseases (deaths/100,000 people)", title = "Deaths from infectious diseases (deaths/100,000 people)") +
+ theme_minimal()
+
+infectiousdeseases2 <- ggplotly(infectiousdeseases)
+```
+
+
+```{r}
+
+infectiousdeseases2
+```
+
+```{r}
+
+```
+
+
+
+___
+
+
+# SOUTH AFRICAN MINING COMPANIES 
+
+___
+
+
+
+__Share price of the bigest South African mining companies__ {.tabset}
+-----------------------------------------------------------------------
+
+Below, it is possible to compare the share price evolution of the 4 largest mining companies in South Africa (by market capitalization) from 2018-01-01 to 2020-01-01 :  
+
+
+
+###	__KUMBA IRON ORE LIMITED__
+```{r,  include=FALSE}
+library(quantmod)
+
+getSymbols("KIO",src="yahoo", from="2018-01-01", to="2020-01-01") 
+head(KIO)
+```
+
+
+```{r,}
+barChart(KIO)
+```
+
+###	__AFRICAN RAINBOW MINERALS LIMITED__
+```{r,  include=FALSE}
+getSymbols("ARI",src="yahoo", from="2018-01-01", to="2020-01-01") 
+head(ARI)
+```
+
+
+```{r}
+barChart(ARI)
+```
+
+### __ASSORE LIMITED__
+```{r,  include=FALSE}
+getSymbols("ASR",src="yahoo", from="2018-01-01", to="2020-01-01")
+head(ASR)
+```
+
+
+```{r}
+barChart(ASR)
+
+```
+
+###	__ANGLO AMERICAN PLATINUM LIMITED__
+```{r,  include=FALSE}
+getSymbols("AMS",src="yahoo", from="2018-01-01", to="2020-01-01")
+head(AMS)
+```
+
+
+```{r}
+barChart(AMS)
+```
+
+
+__The crisis of 2018__
+-------------------------------------
+
+   
+By comparing these different graphs, it is possible to highlight the dip in the middle of it. This shows a big drop in the valuation of South African mining companies at the end of 2018.
+   
+   In fact, reading the news of this period, we can see that the world price of raw materials has fallen. South Africa has been particularly affected because of many factors.
+   On the __political__ and __social__ aspects, the government has prevented the dismissal of employees in the mining sector and is in the process of increasing overall wages.
+   On the __economical__ aspect, there is a lack of investments in mines and decreasing soil resources are forcing mining companies to dig deeper and deeper.
+   
+   > _ASSORE LIMITED_ is experiencing a __38%__ drop of its valuation in this period.
+   
+   Thus, we can see through these graphs __a risk for South Africa__, which is highly dependent on its mineral resources, which are both exhaustible and require large financial investments. 
+
+__Covid-19 Update on mining companies share price !__   {.tabset}
+-------------------------------------
+
+
+The global spread of the new Covid-19 virus has caused world markets to plummet. What about the minerals market?
+(The graphs show the evolution up to now while keeping displayed the 2018 crisis for comparison).
+
+
+###	__KUMBA IRON ORE LIMITED__
+```{r,  include=FALSE}
+library(quantmod)
+
+getSymbols("KIO",src="yahoo", from="2018-01-01") 
+head(KIO)
+```
+
+
+```{r}
+barChart(KIO)
+```
+
+###	__AFRICAN RAINBOW MINERALS LIMITED__
+```{r,  include=FALSE}
+getSymbols("ARI",src="yahoo", from="2018-01-01") 
+head(ARI)
+```
+
+
+```{r}
+barChart(ARI)
+```
+
+### __ASSORE LIMITED__
+```{r,  include=FALSE}
+getSymbols("ASR",src="yahoo", from="2018-01-01")
+head(ASR)
+```
+
+
+```{r}
+barChart(ASR)
+
+```
+
+###	__ANGLO AMERICAN PLATINUM LIMITED__
+```{r,  include=FALSE}
+getSymbols("AMS",src="yahoo", from="2018-01-01")
+head(AMS)
+```
+
+
+```{r}
+barChart(AMS)
+```
+
+
+__What is the impact of the Covid-19 on South African mining companies?__
+-------------------------------------
+
+The minerals market seems to be no exception to the global crisis. This is what can be inferred from the sharp drop in the share prices of the 4 giants of the South African mining industry.  China's containment is coming to an end after proving its effectiveness, but most OECD countries are only just beginning this period at the end of March 2020, notably France and California in the United States.  It is still too early to see the containment horizon (France will most likely extend the containment horizon for its population). So how deep will this crisis be? Predicting is difficult, for the moment we have to be content with observing its impact on the 4 giants of the South African mining industry. 
+(at the time of the generation of this graph, the fall is still in progress, it would be interesting to generate this graph again at the end of this health crisis).
+   
+   > _ASSORE LIMITED_ is experiencing a __60%__ drop of its valuation because of the Covid-19 crisis, a drop __twice bigger__ than the crisis of 2018.
+   
+As studied previously, the South African government has prevented the dismissal of many workers in the mining sector, thus posing economic difficulties to the mining companies. In this new and even more important crisis (and it is not yet known how far the share price will collapse), the social consequences could be dramatic: either in terms of redundancies or in terms of the bankruptcy of the mining companies. 
+
+
+
+

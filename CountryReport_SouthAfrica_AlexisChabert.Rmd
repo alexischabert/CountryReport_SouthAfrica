@@ -34,7 +34,7 @@ infectiousdeseases <- ggplot(NBM_5) +
  aes(x = var_year, y = value, colour = countryName) +
  geom_line(size = 1.2) +
  scale_color_hue() +
- labs(x = "Year", y = "Deaths from infectious diseases (deaths/100,000 people)", title = "Deaths from infectious diseases (deaths/100,000 people)") +
+ labs(x = "Year", y = "Deaths from infectious diseases (deaths/100,000 people)", title = "Deaths from infectious diseases (deaths/100,000 people)", caption = "SKEMA Global Lab in AI") +
  theme_minimal()
 
 infectiousdeseases2 <- ggplotly(infectiousdeseases)
@@ -44,11 +44,78 @@ infectiousdeseases2 <- ggplotly(infectiousdeseases)
 ```{r}
 
 infectiousdeseases2
+
+```
+```{r, include=FALSE}
+library(spiR)
+library(tidyr)
+library(dplyr)
+NBM_3 <- sqs_spi_data(country = c("AGO", "ZAF", "IND", "CHN", "LSO", "CAF", "MOZ", "GAB"),
+                       indicators = "NBM_3")
+
+NBM_3$value <- as.numeric(NBM_3$value)
+NBM_3 %>% arrange(value)
+
+```
+
+```{r, include=FALSE}
+library(ggplot2)
+library(plotly)
+
+childmortality <- ggplot(NBM_3) +
+ aes(x = var_year, y = value, colour = countryName) +
+ geom_line(size = 1.2) +
+ scale_color_hue() +
+ labs(x = "Year", y = "Child mortality", title = "Child mortality", caption = "SKEMA Global Lab in AI") +
+ theme_minimal()
+
+childmortality2 <- ggplotly(childmortality)
 ```
 
 ```{r}
+childmortality2
+```
+
+
+
+```{r}
+library(spiR)
+sqs_spi_indicator()
+```
+
+
+```{r, include=FALSE}
+library(spiR)
+library(tidyr)
+library(dplyr)
+AIC_2 <- sqs_spi_data(country = c("AGO", "ZAF", "IND", "CHN", "LSO", "CAF", "MOZ", "GAB"),
+                       indicators = "AIC_2")
+
+AIC_2$value <- as.numeric(AIC_2$value)
+AIC_2 %>% arrange(value)
 
 ```
+
+```{r, include=FALSE}
+library(ggplot2)
+library(plotly)
+
+internetaccess <- ggplot(AIC_2) +
+ aes(x = var_year, y = value, colour = countryName) +
+ geom_line(size = 1.2) +
+ scale_color_hue() +
+ labs(x = "Year", y = "Internet access", title = "Internet access", caption = "SKEMA Global Lab in AI") +
+ theme_minimal()
+
+internetaccess2 <- ggplotly(internetaccess)
+```
+
+```{r}
+internetaccess2
+```
+
+
+
 
 
 
@@ -198,4 +265,69 @@ As studied previously, the South African government has prevented the dismissal 
 
 
 
+#Life expectancy at birth
+
+
+```{r, include=FALSE}
+library(rdbnomics)
+library(dplyr)
+library(base)
+
+lifeexpectancy <- rdb(ids = c("UNDATA/DF_UNDATA_WPP/SP_DYN_LE00.A.Y0._T._T.001.M", 'UNDATA/DF_UNDATA_WPP/SP_DYN_LE00.A.Y0._T._T.002.M', 'UNDATA/DF_UNDATA_WPP/SP_DYN_LE00.A.Y0._T._T.011.M', 'UNDATA/DF_UNDATA_WPP/SP_DYN_LE00.A.Y0._T._T.014.M', 'UNDATA/DF_UNDATA_WPP/SP_DYN_LE00.A.Y0._T._T.015.M', 'UNDATA/DF_UNDATA_WPP/SP_DYN_LE00.A.Y0._T._T.017.M', 'UNDATA/DF_UNDATA_WPP/SP_DYN_LE00.A.Y0._T._T.018.M', 'UNDATA/DF_UNDATA_WPP/SP_DYN_LE00.A.Y0._T._T.202.M', 'UNDATA/DF_UNDATA_WPP/SP_DYN_LE00.A.Y0._T._T.710.M')) %>%
+     filter(!is.na(value))
+
+lifeexpectancy$series_code <- gsub("SP_DYN_LE00.A.Y0._T._T.710.M", "South Africa", lifeexpectancy$series_code)
+lifeexpectancy$series_code <- gsub("SP_DYN_LE00.A.Y0._T._T.001.M", "World", lifeexpectancy$series_code)
+lifeexpectancy$series_code <- gsub("SP_DYN_LE00.A.Y0._T._T.002.M", "Africa", lifeexpectancy$series_code)
+lifeexpectancy$series_code <- gsub("SP_DYN_LE00.A.Y0._T._T.011.M", "Western Africa", lifeexpectancy$series_code)
+lifeexpectancy$series_code <- gsub("SP_DYN_LE00.A.Y0._T._T.014.M", "Eastern Africa", lifeexpectancy$series_code)
+lifeexpectancy$series_code <- gsub("SP_DYN_LE00.A.Y0._T._T.015.M", "Northern Africa", lifeexpectancy$series_code)
+lifeexpectancy$series_code <- gsub("SP_DYN_LE00.A.Y0._T._T.017.M", "Middle Africa", lifeexpectancy$series_code)
+lifeexpectancy$series_code <- gsub("SP_DYN_LE00.A.Y0._T._T.018.M", "Southern Africa", lifeexpectancy$series_code)
+lifeexpectancy$series_code <- gsub("SP_DYN_LE00.A.Y0._T._T.014.M", "Eastern Africa", lifeexpectancy$series_code)
+lifeexpectancy$series_code <- gsub("SP_DYN_LE00.A.Y0._T._T.202.M", "Sub-Saharan Africa", lifeexpectancy$series_code)
+lifeexpectancy
+```
+
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+lifeexpectancy %>%
+ filter(original_period %in% c("1955", "1960", "1965", "1970", 
+"1975", "1980", "1985", "1990", "1995", "2000", "2005", "2010", "2015", "2020")) %>%
+ ggplot() +
+ aes(x = series_code, y = value) +
+ geom_boxplot(fill = "#4292c6") +
+ labs(x = "Area/Country", y = "Age", title = "Life expectancy at birth (years)", caption = "SKEMA Global Lab in AI - UNDATA") +
+ theme_gray()
+```
+
+```{r}
+
+library(dplyr)
+library(ggplot2)
+
+lifeexpectancy %>%
+ filter(original_period %in% "2020") %>%
+ ggplot() +
+ aes(x = series_code, fill = series_code, weight = value) +
+ geom_bar() +
+ scale_fill_hue() +
+ theme_minimal()
+```
+
+```{r}
+library(ggplot2)
+
+lifeexpectancy %>%
+ filter(original_period %in% c("1955", "1960", "1965", "1970", 
+"1975", "1980", "1985", "1990", "1995", "2000", "2005", "2010", "2015", "2020")) %>%
+ ggplot() +
+aes(x = period, y = value, color = series_code) +
+  geom_line(size = 1) + 
+  theme(legend.position="bottom") + 
+   guides(col = guide_legend(nrow = 4))
+```
 
